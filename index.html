@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+
+  <title>Data Verifier</title>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="./styles.css">
+
+  <!-- Scripts -->
+  <script>
+    delete module.exports
+  </script>
+  <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+  <script src="./window.js" charset="utf-8"></script>
+
+</head>
+
+<body>
+  <div id="container" class="container-fluid">
+
+    <!-- Input row -->
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+        <h3 class="hash-heading">Data to Verify</h3>
+        <textarea rows="2" id="text-input" class="form-control text-input" placeholder="Enter data to verify"></textarea>
+      </div>
+    </div>
+
+    <!-- SHA-256 row -->
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <h3 class="hash-heading">SHA-256</h3>
+        <pre id="sha256-output" class="hash-output"> </pre>
+        <button id="verify-sha-256" type="button" class="btn btn-success">Verify</button>
+      </div>
+    </div>
+
+    <!-- SHA-512 row -->
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <h3 class="hash-heading">SHA-512</h3>
+        <pre id="sha512-output" class="hash-output"> </pre>
+        <button id="verify-sha-512" type="button" class="btn btn-success">Verify</button>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div id="sha512-found" class="alert alert-success" role="alert" style="display: none">
+          Checked
+        </div>
+        <div id="sha512-not-found" class="alert alert-warning" role="alert" style="display: none">
+          Not Found
+        </div>
+        <div id="sha512-tree-output">
+          <ul class="list-group list-group-flush"></ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+
+</html>
