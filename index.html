@@ -50,7 +50,7 @@
 
     <div class="row">
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <p>Select the desired Stage:</p>
+        <p>Select the desired Stage and Hash Type:</p>
         <fieldset>
           <input type="radio" id="dev" name="stage" value="dev">
           <label for="dev"> Development</label>
@@ -59,13 +59,11 @@
           <input type="radio" id="prod" name="stage" value="prod" checked>
           <label for="prod"> Production</label>
         </fieldset>
-        <br>
-        <p>Select hash type:</p>
         <fieldset>
-          <label for="sha512"> SHA-512</label>
           <input type="radio" id="sha512" name="hash-type" value="512" checked>
-          <label for="sha256"> SHA-256</label>
+          <label for="sha512"> SHA-512</label>
           <input type="radio" id="sha256" name="hash-type" value="256">
+          <label for="sha256"> SHA-256</label>
         </fieldset>
         <br>
         <button id="verify" type="button" class="btn btn-success">Verify</button>
