@@ -5,13 +5,6 @@ $(() => {
 
     $('#text-input').bind('input propertychange', function () {
         const text = this.value
-
-        const md5 = crypto.createHash('md5').update(text, 'utf8').digest('hex')
-        $('#md5-output').text(md5)
-
-        const sha1 = crypto.createHash('sha1').update(text, 'utf8').digest('hex')
-        $('#sha1-output').text(sha1)
-
         const sha256 = crypto.createHash('sha256').update(text, 'utf8').digest('base64')
         $('#sha256-output').text(sha256)
 
@@ -19,23 +12,21 @@ $(() => {
         $('#sha512-output').text(sha512)
     })
 
-    $('#verify-sha-256').click(function () {
-        alert("Handler for .click() called.");
-    });
+    $('#verify').click(function () {
 
-    $('#verify-sha-512').click(function () {
+        const stage = $('input[name=stage]:checked').val();
+        const hashType = $('input[name=hash-type]:checked').val();
 
-        const postData = $('#sha512-output').text().trim();
-
+        const postData = $('#sha' + hashType + '-output').text().trim();
         if (postData === "") {
-            $('#sha512-not-found').show().text("Please: Enter some data");
+            $('#not-found-notice').show().text("Please: Enter some data");
             return false;
         }
 
         const request = net.request({
             method: 'POST',
             protocol: 'https:',
-            hostname: 'verify.dev.ubirch.com',
+            hostname: 'verify.' + stage + '.ubirch.com',
             path: '/api/upp/verify/anchor',
             headers: {
                 'Content-Type': 'application/json',
@@ -43,24 +34,26 @@ $(() => {
             }
         })
         request.on('response', (response) => {
-            $('#sha512-found').hide()
-            $('#sha512-not-found').hide()
-            $('#sha512-tree-output ul').html("")
+            $('#found-notice').hide()
+            $('#not-found-notice').hide()
+            $('#tree-output ul').html("")
 
             if (response.statusCode > 299) {
-                $('#sha512-not-found').show()
+                $('#not-found-notice').show();
             } else {
-                $('#sha512-found').show()
+                $('#found-notice').show();
             }
-            console.log(`STATUS: ${response.statusCode}`)
-            console.log(`HEADERS: ${JSON.stringify(response.headers)}`)
+            console.log(`STATUS: ${response.statusCode}`);
+            console.log(`HEADERS: ${JSON.stringify(response.headers)}`);
             let data = '';
             response.on('end', () => {
-                const dataJ = JSON.parse(data);
-                dataJ.anchors.forEach((e) => {
-                    $('#sha512-tree-output ul').append(
-                        '<li class="list-group-item">' + e.properties.public_chain + '<br>' + e.properties.hash + '<br>' + e.properties.timestamp + '</li>');
-                });
+                if(data.length > 0) {
+                    const dataJ = JSON.parse(data);
+                    dataJ.anchors.forEach((e) => {
+                        $('#tree-output ul').append(
+                            '<li class="list-group-item">' + e.properties.public_chain + '<br>' + e.properties.hash + '<br>' + e.properties.timestamp + '</li>');
+                    });
+                }
             });
             response.on('data', (chunk) => {
                 data += chunk;

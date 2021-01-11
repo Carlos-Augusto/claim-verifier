@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html  lang="en">
 
 <head>
   <meta charset="utf-8">
 
-  <title>Data Verifier</title>
+  <title>Data Claim Claim Verifier</title>
 
   <!-- Stylesheets -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -35,7 +35,6 @@
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <h3 class="hash-heading">SHA-256</h3>
         <pre id="sha256-output" class="hash-output"> </pre>
-        <button id="verify-sha-256" type="button" class="btn btn-success">Verify</button>
       </div>
     </div>
 
@@ -44,7 +43,6 @@
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <h3 class="hash-heading">SHA-512</h3>
         <pre id="sha512-output" class="hash-output"> </pre>
-        <button id="verify-sha-512" type="button" class="btn btn-success">Verify</button>
       </div>
     </div>
 
@@ -52,13 +50,39 @@
 
     <div class="row">
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <div id="sha512-found" class="alert alert-success" role="alert" style="display: none">
+        <p>Select the desired Stage:</p>
+        <fieldset>
+          <input type="radio" id="dev" name="stage" value="dev">
+          <label for="dev"> Development</label>
+          <input type="radio" id="demo" name="stage" value="demo">
+          <label for="demo"> Demo</label>
+          <input type="radio" id="prod" name="stage" value="prod" checked>
+          <label for="prod"> Production</label>
+        </fieldset>
+        <br>
+        <p>Select hash type:</p>
+        <fieldset>
+          <label for="sha512"> SHA-512</label>
+          <input type="radio" id="sha512" name="hash-type" value="512" checked>
+          <label for="sha256"> SHA-256</label>
+          <input type="radio" id="sha256" name="hash-type" value="256">
+        </fieldset>
+        <br>
+        <button id="verify" type="button" class="btn btn-success">Verify</button>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div id="found-notice" class="alert alert-success" role="alert" style="display: none">
           Checked
         </div>
-        <div id="sha512-not-found" class="alert alert-warning" role="alert" style="display: none">
+        <div id="not-found-notice" class="alert alert-warning" role="alert" style="display: none">
           Not Found
         </div>
-        <div id="sha512-tree-output">
+        <div id="tree-output">
           <ul class="list-group list-group-flush"></ul>
         </div>
       </div>
