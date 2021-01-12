@@ -64,6 +64,16 @@
           <input type="radio" id="sha256" name="hash-type" value="256">
           <label for="sha256"> SHA-256</label>
         </fieldset>
+        <fieldset>
+          <input type="radio" id="full" name="verification" value="full">
+          <label for="full"> Full verification</label>
+          <input type="radio" id="upper" name="verification" value="upper" checked>
+          <label for="upper"> Upper verification</label>
+          <input type="radio" id="initial" name="verification" value="initial">
+          <label for="initial"> Initial verification</label>
+          <input type="radio" id="simple" name="verification" value="simple">
+          <label for="simple"> Simple verification</label>
+        </fieldset>
         <br>
         <button id="verify" type="button" class="btn btn-success">Verify</button>
       </div>

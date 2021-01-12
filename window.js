@@ -3,10 +3,31 @@ $(() => {
     const electron = require('electron')
     const net = electron.remote.net;
 
+    const veriPaths = {
+        full: '/api/upp/verify/record',
+        upper: '/api/upp/verify/anchor',
+        initial: '/api/upp/verify',
+        simple: '/api/upp/verify'
+    }
+
     const verify = () => {
 
         const stage = $('input[name=stage]:checked').val();
         const hashType = $('input[name=hash-type]:checked').val();
+        const verificationType = $('input[name=verification]:checked').val();
+
+        let verificationPath;
+        if(verificationType === "full"){
+            verificationPath=veriPaths.full
+        } else if (verificationType === "upper"){
+            verificationPath=veriPaths.upper
+        } else if (verificationType === "initial"){
+            verificationPath=veriPaths.initial
+        } else if (verificationType === "simple"){
+            verificationPath=veriPaths.simple
+        } else {
+            verificationPath=veriPaths.upper
+        }
 
         const postData = $('#sha' + hashType + '-output').text().trim();
         if (postData === "") {
@@ -18,7 +39,7 @@ $(() => {
             method: 'POST',
             protocol: 'https:',
             hostname: 'verify.' + stage + '.ubirch.com',
-            path: '/api/upp/verify/anchor',
+            path: verificationPath,
             headers: {
                 'Content-Type': 'application/json',
                 'Content-Length': postData.length
@@ -40,10 +61,22 @@ $(() => {
             response.on('end', () => {
                 if (data.length > 0) {
                     const dataJ = JSON.parse(data);
-                    dataJ.anchors.forEach((e) => {
-                        $('#tree-output ul').append(
-                            '<li class="list-group-item">' + e.properties.public_chain + '<br>' + e.properties.hash + '<br>' + e.properties.timestamp + '</li>');
-                    });
+                    if(verificationType === "full"){
+                        dataJ.anchors.upper_blockchains.forEach((e) => {
+                            $('#tree-output ul').append(
+                                '<li class="list-group-item">' + e.properties.public_chain + '<br>' + e.properties.hash + '<br>' + e.properties.timestamp + '</li>');
+                        });
+                        dataJ.anchors.lower_blockchains.forEach((e) => {
+                            $('#tree-output ul').append(
+                                '<li class="list-group-item">' + e.properties.public_chain + '<br>' + e.properties.hash + '<br>' + e.properties.timestamp + '</li>');
+                        });
+                    } else {
+                        dataJ.anchors.forEach((e) => {
+                            $('#tree-output ul').append(
+                                '<li class="list-group-item">' + e.properties.public_chain + '<br>' + e.properties.hash + '<br>' + e.properties.timestamp + '</li>');
+                        });
+                    }
+
                 }
             });
             response.on('data', (chunk) => {
