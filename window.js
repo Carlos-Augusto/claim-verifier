@@ -10,7 +10,7 @@ $(() => {
         simple: '/api/upp/verify'
     }
 
-    const verify = () => {
+    const verify = (event) => {
 
         const stage = $('input[name=stage]:checked').val();
         const hashType = $('input[name=hash-type]:checked').val();
@@ -34,6 +34,10 @@ $(() => {
             $('#not-found-notice').show().text("Please: Enter some data");
             return false;
         }
+
+        const button = $(event.currentTarget)
+        button.html("Verifying")
+        button.prop("disabled",true);
 
         const request = net.request({
             method: 'POST',
@@ -64,11 +68,11 @@ $(() => {
                     if(verificationType === "full"){
                         dataJ.anchors.upper_blockchains.forEach((e) => {
                             $('#tree-output ul').append(
-                                '<li class="list-group-item">' + e.properties.public_chain + '<br>' + e.properties.hash + '<br>' + e.properties.timestamp + '</li>');
+                                '<li class="list-group-item"> &uarr; - ' + e.properties.public_chain + '<br>' + e.properties.hash + '<br>' + e.properties.timestamp + '</li>');
                         });
                         dataJ.anchors.lower_blockchains.forEach((e) => {
                             $('#tree-output ul').append(
-                                '<li class="list-group-item">' + e.properties.public_chain + '<br>' + e.properties.hash + '<br>' + e.properties.timestamp + '</li>');
+                                '<li class="list-group-item"> &darr; - ' + e.properties.public_chain + '<br>' + e.properties.hash + '<br>' + e.properties.timestamp + '</li>');
                         });
                     } else {
                         dataJ.anchors.forEach((e) => {
@@ -78,6 +82,8 @@ $(() => {
                     }
 
                 }
+                button.html("Verify")
+                button.prop("disabled",false);
             });
             response.on('data', (chunk) => {
                 data += chunk;
