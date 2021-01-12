@@ -12,6 +12,9 @@ $(() => {
 
     const verify = (event) => {
 
+        $('#found-notice').hide();
+        $('#not-found-notice').hide();
+
         const stage = $('input[name=stage]:checked').val();
         const hashType = $('input[name=hash-type]:checked').val();
         const verificationType = $('input[name=verification]:checked').val();
@@ -74,13 +77,14 @@ $(() => {
                             $('#tree-output ul').append(
                                 '<li class="list-group-item"> &darr; - ' + e.properties.public_chain + '<br>' + e.properties.hash + '<br>' + e.properties.timestamp + '</li>');
                         });
-                    } else {
+                    } else if(verificationType === "upper") {
                         dataJ.anchors.forEach((e) => {
                             $('#tree-output ul').append(
-                                '<li class="list-group-item">' + e.properties.public_chain + '<br>' + e.properties.hash + '<br>' + e.properties.timestamp + '</li>');
+                                '<li class="list-group-item"> &uarr; -' + e.properties.public_chain + '<br>' + e.properties.hash + '<br>' + e.properties.timestamp + '</li>');
                         });
+                    } else {
+                        // do nothing
                     }
-
                 }
                 button.html("Verify")
                 button.prop("disabled",false);
