@@ -3,16 +3,7 @@ $(() => {
     const electron = require('electron')
     const net = electron.remote.net;
 
-    $('#text-input').bind('input propertychange', function () {
-        const text = this.value
-        const sha256 = crypto.createHash('sha256').update(text, 'utf8').digest('base64')
-        $('#sha256-output').text(sha256)
-
-        const sha512 = crypto.createHash('sha512').update(text, 'utf8').digest('base64')
-        $('#sha512-output').text(sha512)
-    })
-
-    $('#verify').click(function () {
+    const verify = () => {
 
         const stage = $('input[name=stage]:checked').val();
         const hashType = $('input[name=hash-type]:checked').val();
@@ -47,7 +38,7 @@ $(() => {
             console.log(`HEADERS: ${JSON.stringify(response.headers)}`);
             let data = '';
             response.on('end', () => {
-                if(data.length > 0) {
+                if (data.length > 0) {
                     const dataJ = JSON.parse(data);
                     dataJ.anchors.forEach((e) => {
                         $('#tree-output ul').append(
@@ -61,7 +52,17 @@ $(() => {
         });
         request.write(postData);
         request.end();
-    });
+    }
+
+    $('#text-input').bind('input propertychange', (event) => {
+        const text = event.currentTarget.value
+        const sha256 = crypto.createHash('sha256').update(text, 'utf8').digest('base64')
+        $('#sha256-output').text(sha256)
+        const sha512 = crypto.createHash('sha512').update(text, 'utf8').digest('base64')
+        $('#sha512-output').text(sha512)
+    })
+
+    $('#verify').click(verify);
 
     $('#text-input').focus() // focus input box
 })

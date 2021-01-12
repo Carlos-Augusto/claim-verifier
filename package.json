@@ -2,7 +2,7 @@
   "name": "data_verifier",
   "version": "1.0.0",
   "description": "Simple e-app that allows to verify data against the Ubirch Trust Service\n\n",
-  "repository": "electron/simple-samples",
+  "repository": "https://github.com/Carlos-Augusto/claim-verifier",
   "main": "app.js",
   "scripts": {
     "start": "electron app.js"
