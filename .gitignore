@@ -22,3 +22,4 @@ temp*
 timestamps*
 
 .sqlite3
+out/
