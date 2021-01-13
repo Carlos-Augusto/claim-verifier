@@ -99,18 +99,28 @@ $(() => {
     };
 
     let schedulerId = null;
+    let counterId = null;
     const onClick = (event) => {
         const scheduler = $('input[name=scheduler]').is(':checked')
+        let counter = 0;
         if (scheduler === true && schedulerId === null) {
             buttonLabel = "Stop Scheduler"
             $(event.currentTarget).html(buttonLabel)
+            counterId = setInterval(() => {
+                $(event.currentTarget).html(buttonLabel + '-' + counter)
+                counter = counter + 1;
+                if(counter === 30){
+                  counter = 0;
+                }
+            }, 1000);
             schedulerId = setInterval(() => {
                 verify($(event.currentTarget))
-            }, 10000)
+            }, 30000)
         } else {
             buttonLabel = "Verify"
             $(event.currentTarget).html(buttonLabel)
             clearInterval(schedulerId);
+            clearInterval(counterId)
             schedulerId = null
             verify($(event.currentTarget))
         }
