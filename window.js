@@ -10,7 +10,9 @@ $(() => {
         simple: '/api/upp/verify'
     }
 
-    const verify = (event) => {
+    let buttonLabel = "Verify";
+
+    const verify = (button) => {
 
         $('#found-notice').hide();
         $('#not-found-notice').hide();
@@ -20,16 +22,16 @@ $(() => {
         const verificationType = $('input[name=verification]:checked').val();
 
         let verificationPath;
-        if(verificationType === "full"){
-            verificationPath=veriPaths.full
-        } else if (verificationType === "upper"){
-            verificationPath=veriPaths.upper
-        } else if (verificationType === "initial"){
-            verificationPath=veriPaths.initial
-        } else if (verificationType === "simple"){
-            verificationPath=veriPaths.simple
+        if (verificationType === "full") {
+            verificationPath = veriPaths.full
+        } else if (verificationType === "upper") {
+            verificationPath = veriPaths.upper
+        } else if (verificationType === "initial") {
+            verificationPath = veriPaths.initial
+        } else if (verificationType === "simple") {
+            verificationPath = veriPaths.simple
         } else {
-            verificationPath=veriPaths.upper
+            verificationPath = veriPaths.upper
         }
 
         const postData = $('#sha' + hashType + '-output').text().trim();
@@ -38,9 +40,8 @@ $(() => {
             return false;
         }
 
-        const button = $(event.currentTarget)
         button.html("Verifying")
-        button.prop("disabled",true);
+        button.prop("disabled", true);
 
         const request = net.request({
             method: 'POST',
@@ -68,7 +69,7 @@ $(() => {
             response.on('end', () => {
                 if (data.length > 0) {
                     const dataJ = JSON.parse(data);
-                    if(verificationType === "full"){
+                    if (verificationType === "full") {
                         dataJ.anchors.upper_blockchains.forEach((e) => {
                             $('#tree-output ul').append(
                                 '<li class="list-group-item"> &uarr; - ' + e.properties.public_chain + '<br>' + e.properties.hash + '<br>' + e.properties.timestamp + '</li>');
@@ -77,7 +78,7 @@ $(() => {
                             $('#tree-output ul').append(
                                 '<li class="list-group-item"> &darr; - ' + e.properties.public_chain + '<br>' + e.properties.hash + '<br>' + e.properties.timestamp + '</li>');
                         });
-                    } else if(verificationType === "upper") {
+                    } else if (verificationType === "upper") {
                         dataJ.anchors.forEach((e) => {
                             $('#tree-output ul').append(
                                 '<li class="list-group-item"> &uarr; -' + e.properties.public_chain + '<br>' + e.properties.hash + '<br>' + e.properties.timestamp + '</li>');
@@ -86,8 +87,8 @@ $(() => {
                         // do nothing
                     }
                 }
-                button.html("Verify")
-                button.prop("disabled",false);
+                button.html(buttonLabel)
+                button.prop("disabled", false);
             });
             response.on('data', (chunk) => {
                 data += chunk;
@@ -95,6 +96,34 @@ $(() => {
         });
         request.write(postData);
         request.end();
+    };
+
+    let schedulerId = null;
+    let counterId = null;
+    const onClick = (event) => {
+        const scheduler = $('input[name=scheduler]').is(':checked')
+        let counter = 1;
+        if (scheduler === true && schedulerId === null) {
+            buttonLabel = "Stop Scheduler"
+            $(event.currentTarget).html(buttonLabel)
+            counterId = setInterval(() => {
+                $(event.currentTarget).html(buttonLabel + '-' + counter)
+                counter = counter + 1;
+                if(counter === 30){
+                  counter = 1;
+                }
+            }, 1000);
+            schedulerId = setInterval(() => {
+                verify($(event.currentTarget))
+            }, 30000)
+        } else {
+            buttonLabel = "Verify"
+            $(event.currentTarget).html(buttonLabel)
+            clearInterval(schedulerId);
+            clearInterval(counterId)
+            schedulerId = null
+            verify($(event.currentTarget))
+        }
     }
 
     $('#text-input').bind('input propertychange', (event) => {
@@ -105,7 +134,7 @@ $(() => {
         $('#sha512-output').text(sha512)
     })
 
-    $('#verify').click(verify);
+    $('#verify').click(onClick);
 
     $('#text-input').focus() // focus input box
 })
