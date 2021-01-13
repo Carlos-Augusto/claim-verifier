@@ -1,8 +1,10 @@
 # Data Claims Verifier
 
-Simple e-app that allows verifying data against the Ubirch Trust Service
+Simple e-app that allows verifying data claims against the Ubirch Trust Service.
 
 ![screenshot](data_claims.png)
+
+![screenshot](data_claims_verifier.png)
 
 ## How to run it
 
