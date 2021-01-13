@@ -102,7 +102,7 @@ $(() => {
     let counterId = null;
     const onClick = (event) => {
         const scheduler = $('input[name=scheduler]').is(':checked')
-        let counter = 0;
+        let counter = 1;
         if (scheduler === true && schedulerId === null) {
             buttonLabel = "Stop Scheduler"
             $(event.currentTarget).html(buttonLabel)
@@ -110,7 +110,7 @@ $(() => {
                 $(event.currentTarget).html(buttonLabel + '-' + counter)
                 counter = counter + 1;
                 if(counter === 30){
-                  counter = 0;
+                  counter = 1;
                 }
             }, 1000);
             schedulerId = setInterval(() => {
