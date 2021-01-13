@@ -57,6 +57,7 @@ $(() => {
             $('#found-notice').hide()
             $('#not-found-notice').hide()
             $('#tree-output ul').html("")
+            $('#found-details').html("")
 
             if (response.statusCode > 299) {
                 $('#not-found-notice').show();
@@ -70,16 +71,22 @@ $(() => {
                 if (data.length > 0) {
                     const dataJ = JSON.parse(data);
                     if (verificationType === "full") {
-                        dataJ.anchors.upper_blockchains.forEach((e) => {
+                        const uppers = dataJ.anchors.upper_blockchains
+                        $('#found-details').append("U: " + uppers.length)
+                        uppers.forEach((e) => {
                             $('#tree-output ul').append(
                                 '<li class="list-group-item"> &uarr; - ' + e.properties.public_chain + '<br>' + e.properties.hash + '<br>' + e.properties.timestamp + '</li>');
                         });
-                        dataJ.anchors.lower_blockchains.forEach((e) => {
+                        const lowers = dataJ.anchors.lower_blockchains
+                        $('#found-details').append(" | L: " + uppers.length)
+                        lowers.forEach((e) => {
                             $('#tree-output ul').append(
                                 '<li class="list-group-item"> &darr; - ' + e.properties.public_chain + '<br>' + e.properties.hash + '<br>' + e.properties.timestamp + '</li>');
                         });
                     } else if (verificationType === "upper") {
-                        dataJ.anchors.forEach((e) => {
+                        const uppers = dataJ.anchors
+                        $('#found-details').append("U: " + uppers.length)
+                        uppers.forEach((e) => {
                             $('#tree-output ul').append(
                                 '<li class="list-group-item"> &uarr; -' + e.properties.public_chain + '<br>' + e.properties.hash + '<br>' + e.properties.timestamp + '</li>');
                         });
