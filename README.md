@@ -16,5 +16,5 @@ Simple e-app that allows verifying data claims against the Ubirch Trust Service.
 
 ## Ideas to add
 
-- A scheduler to query for not yet anchored data claims until found.
+~~- A scheduler to query for not yet anchored data claims until found.~~
 - Manage app from tray app.
