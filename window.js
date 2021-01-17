@@ -68,7 +68,7 @@ $(() => {
             console.log(`HEADERS: ${JSON.stringify(response.headers)}`);
             let data = '';
             response.on('end', () => {
-                if (data.length > 0) {
+                if (data.length > 0 && response.statusCode <= 299) {
                     const dataJ = JSON.parse(data);
                     if (verificationType === "full") {
                         const uppers = dataJ.anchors.upper_blockchains
